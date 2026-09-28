@@ -9,7 +9,7 @@
 
 <link rel="icon" type="image/png" href="icon.png">
 <link rel="apple-touch-icon" href="icon.png">
-наб
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
@@ -240,6 +240,27 @@
     font-size: 1.15rem;
   }
 
+  /* --- видеоафиша --- */
+  .afisha { padding: 8px 0 32px; }
+  .afisha h2 {
+    margin: 0 0 20px;
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: clamp(1.25rem, 3.4vw, 1.7rem);
+    line-height: 1.25;
+    text-shadow: 0 0 22px rgba(var(--neon-rgb), 0.5);
+  }
+  .afisha__frame {
+    width: min(100%, 420px);
+    border: 1.5px solid rgba(var(--neon-rgb), 0.6);
+    border-radius: 24px;
+    overflow: hidden;
+    background: #0d0705;
+    box-shadow: 0 0 26px rgba(var(--neon-rgb), 0.35), inset 0 0 26px rgba(var(--neon-rgb), 0.08);
+  }
+  .afisha video { display: block; width: 100%; height: auto; }
+  .afisha .btn { margin-top: 24px; }
+
   /* --- О нас: хроника вечера --- */
   .story { padding: 24px 0 8px; }
   .story h2,
@@ -310,6 +331,70 @@
     transition: color 200ms ease, text-decoration-color 200ms ease;
   }
   .timeline p a:hover { color: rgb(var(--neon-4-rgb)); text-decoration-color: rgb(var(--neon-4-rgb)); }
+
+  /* --- партнёры --- */
+  .partners { padding: 64px 0 8px; }
+  .partners h2 {
+    margin: 0 0 12px;
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: clamp(1.25rem, 3.4vw, 1.7rem);
+    line-height: 1.25;
+    text-shadow: 0 0 22px rgba(var(--neon-rgb), 0.5);
+  }
+  .partners__lead { margin: 0 0 28px; max-width: 48ch; color: #cdbfb3; }
+  .partners__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+  }
+  .partner {
+    display: grid;
+    place-items: center;
+    min-height: 96px;
+    padding: 16px 20px;
+    border: 1.5px solid rgba(var(--neon-rgb), 0.35);
+    border-radius: 20px;
+    background: rgba(24, 8, 2, 0.5);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    color: var(--ink);
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: 0.85rem;
+    line-height: 1.3;
+    text-align: center;
+    text-decoration: none;
+    transition: transform 200ms ease, border-color 220ms ease, box-shadow 220ms ease, color 220ms ease;
+  }
+  .partner img {
+    display: block;
+    max-width: 100%;
+    max-height: 48px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 0.8;
+    transition: opacity 220ms ease, filter 220ms ease;
+  }
+  .partner--brand { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+  .partner__mark { width: 44px; height: 44px; filter: drop-shadow(0 0 8px rgba(var(--neon-rgb), 0.8)); }
+  .partner__name { letter-spacing: 0.04em; text-transform: uppercase; }
+  a.partner:hover {
+    transform: translateY(-2px);
+    border-color: rgb(var(--neon-rgb));
+    box-shadow: 0 0 24px rgba(var(--neon-rgb), 0.55), inset 0 0 18px rgba(var(--neon-rgb), 0.18);
+  }
+  a.partner:hover img { filter: none; opacity: 1; }
+  .partners__cta { margin: 24px 0 0; color: #cdbfb3; }
+  .partners__cta a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: rgba(var(--neon-2-rgb), 0.7);
+    text-underline-offset: 3px;
+  }
 
   /* --- О нас: подписка на соцсети --- */
   .join { padding: 64px 0 8px; }
@@ -545,7 +630,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .panel, .tabs__thumb, .btn, .social, .social__icon, .timeline p a { transition: none; }
+    .panel, .tabs__thumb, .btn, .social, .social__icon, .timeline p a, .partner { transition: none; }
     .hero__title { animation: none; }
     .bg-lights::before, .bg-lights::after { animation: none; }
   }
@@ -582,6 +667,14 @@
       </p>
     </div>
 
+    <section class="afisha" aria-labelledby="afisha-title">
+      <h2 id="afisha-title">Ближайшая тусовка</h2>
+      <div class="afisha__frame">
+        <video id="afisha-video" src="Frame_1_7.mp4" autoplay muted loop playsinline controls preload="metadata"></video>
+      </div>
+      <button class="btn" type="button" data-go="tickets">Купить билет</button>
+    </section>
+
     <div class="story">
       <h2>Что мы уже сделали</h2>
       <ol class="timeline">
@@ -600,11 +693,48 @@
 Выход на новый уровень масштаба.</p>
         </li>
         <li>
-          <h3>Следующий этап Kultura Concert Hall</h3>
-          <p>Kultura Concert Hall — предстоящий вайб, который накроет будто лавина. Это «Орион» — ты сюда погляди-ка. Ха!<a href="https://vk.ru/martyroy" target="_blank" rel="noopener noreferrer">Marty Roy</a>. </p>
+          <h3>Следующий этап — клуб «Феррум»</h3>
+          <p>Клуб «Феррум» в Волгограде — следующая площадка «Ориона». Мощный звук, свет и вайб, который накроет как лавина. Дата и детали — в афише выше. <a href="https://vk.ru/martyroy" target="_blank" rel="noopener noreferrer">Marty Roy</a></p>
         </li>
       </ol>
     </div>
+
+    <section class="partners" aria-labelledby="partners-title">
+      <h2 id="partners-title">Партнёры</h2>
+      <p class="partners__lead">Площадки и компании, с которыми мы делаем тусовки.</p>
+
+      <ul class="partners__list">
+        <li><span class="partner">Клуб «Феррум»</span></li>
+        <li>
+          <span class="partner partner--brand">
+            <svg class="partner__mark" viewBox="0 0 64 64" aria-hidden="true">
+              <defs>
+                <linearGradient id="bz-fire" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" style="stop-color: rgb(var(--neon-4-rgb))"/>
+                  <stop offset="0.55" style="stop-color: rgb(var(--neon-rgb))"/>
+                  <stop offset="1" style="stop-color: rgb(var(--neon-3-rgb))"/>
+                </linearGradient>
+              </defs>
+              <path fill="url(#bz-fire)" d="M12 26C8 18 16 10 24 13C27 6 39 6 42 13C50 10 58 18 52 26C48 31 40 30 36 29L28 29C24 30 16 31 12 26Z"/>
+              <path fill="url(#bz-fire)" d="M27 29C29 36 26 42 22 50L42 50C38 42 35 36 37 29Z"/>
+              <ellipse cx="32" cy="54" rx="26" ry="5" fill="url(#bz-fire)"/>
+            </svg>
+            <span class="partner__name">Bazooka Records</span>
+          </span>
+        </li>
+        <!-- Добавить партнёра: скопируйте один из вариантов ниже и вставьте сюда.
+        С логотипом и ссылкой (файл положите в папку partners/):
+        <li>
+          <a class="partner" href="https://ССЫЛКА" target="_blank" rel="noopener noreferrer">
+            <img src="partners/logo.png" alt="Название" loading="lazy">
+          </a>
+        </li>
+        Только название: <li><span class="partner">Название</span></li>
+        -->
+      </ul>
+
+      <p class="partners__cta">Хотите стать партнёром? Напишите нам в <a href="https://t.me/orion_34_vlg" target="_blank" rel="noopener noreferrer">Telegram</a>.</p>
+    </section>
 
     <section class="join" aria-labelledby="join-title">
       <h2 id="join-title">Зажигаем ярче звёзд!</h2>
@@ -735,6 +865,9 @@
 (function () {
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var FADE = reduce ? 0 : 520;
+
+  var afisha = document.getElementById('afisha-video');
+  if (afisha && reduce) { afisha.removeAttribute('autoplay'); afisha.pause(); }
 
   var nav = document.querySelector('.tabs');
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
