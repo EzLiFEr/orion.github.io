@@ -693,7 +693,7 @@
       page: 'vampire/'
     }
   ];
-  var SLIDER_COUNT = 35;   // фото в папке slider/: _ (1).jpg … _ (35).jpg
+  var SLIDER_COUNT = 35;   // фото в папке slider/: photo (1).jpg … photo (35).jpg
   /* ===================================================================== */
 
   var nav = document.querySelector('.tabs');
@@ -721,7 +721,7 @@
   var track = document.getElementById('slider-track');
   for (var n = 1; n <= SLIDER_COUNT; n++) {
     var im = document.createElement('img');
-    im.src = 'slider/' + encodeURI('_ (' + n + ').jpg');
+    im.src = 'slider/' + encodeURI('photo (' + n + ').jpg');
     im.alt = 'Фото с прошлых тусовок';
     im.loading = 'lazy';
     track.appendChild(im);
