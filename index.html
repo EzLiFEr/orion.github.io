@@ -21,15 +21,14 @@
     --ink-dim: #b9a99c;
     --line: rgba(255, 255, 255, 0.14);
 
-    /* ПАЛИТРА ОГНЯ — четыре цвета в формате R, G, B.
-       Поменяйте их — и весь неон на сайте перекрасится (в том числе искры). */
-    --neon-3-rgb: 255, 56, 44;     /* красный: начало огня */
-    --neon-rgb:   255, 106, 20;    /* оранжевый: главный цвет */
-    --neon-2-rgb: 255, 172, 30;    /* янтарный */
-    --neon-4-rgb: 255, 214, 92;    /* золотой: самый яркий кончик пламени */
+    /* ПАЛИТРА ОГНЯ — четыре цвета в формате R, G, B. */
+    --neon-3-rgb: 255, 56, 44;
+    --neon-rgb:   255, 106, 20;
+    --neon-2-rgb: 255, 172, 30;
+    --neon-4-rgb: 255, 214, 92;
 
     --fire: linear-gradient(100deg, rgb(var(--neon-3-rgb)) 0%, rgb(var(--neon-rgb)) 50%, rgb(var(--neon-2-rgb)) 100%);
-    --on-fire: #1c0700;            /* цвет текста на огненном фоне */
+    --on-fire: #1c0700;
 
     --display: "Unbounded", "Arial Black", system-ui, sans-serif;
     --body: "Golos Text", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -39,7 +38,6 @@
   }
 
   * { box-sizing: border-box; }
-
   html { -webkit-text-size-adjust: 100%; }
 
   body {
@@ -55,136 +53,81 @@
 
   ::selection { background: rgba(var(--neon-rgb), 0.55); color: #fff; }
 
-  /* --- запасной фон: тёплый клубный свет, виден пока не запустилось видео --- */
+  /* --- запасной фон --- */
   .bg-lights {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    overflow: hidden;
-    pointer-events: none;
+    position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
     background:
       radial-gradient(90% 55% at 50% 118%, rgba(var(--neon-rgb), 0.3), rgba(var(--neon-rgb), 0) 70%),
       #060303;
   }
   .bg-lights::before,
-  .bg-lights::after {
-    content: "";
-    position: absolute;
-    border-radius: 50%;
-    will-change: transform;
-  }
+  .bg-lights::after { content: ""; position: absolute; border-radius: 50%; will-change: transform; }
   .bg-lights::before {
-    width: 70vmax; height: 70vmax;
-    left: -25vmax; top: -32vmax;
+    width: 70vmax; height: 70vmax; left: -25vmax; top: -32vmax;
     background: radial-gradient(circle, rgba(var(--neon-3-rgb), 0.4), rgba(var(--neon-3-rgb), 0) 66%);
     animation: glow-a 16s ease-in-out infinite alternate;
   }
   .bg-lights::after {
-    width: 80vmax; height: 80vmax;
-    right: -32vmax; bottom: -40vmax;
+    width: 80vmax; height: 80vmax; right: -32vmax; bottom: -40vmax;
     background: radial-gradient(circle, rgba(var(--neon-2-rgb), 0.34), rgba(var(--neon-2-rgb), 0) 66%);
     animation: glow-b 20s ease-in-out infinite alternate;
   }
   @keyframes glow-a { to { transform: translate(14vmax, 10vmax) scale(1.12); } }
   @keyframes glow-b { to { transform: translate(-12vmax, -8vmax) scale(1.1); } }
 
-  /* --- видео на фоне (desktop.mp4 / mobile.mp4) --- */
+  /* --- видео на фоне --- */
   .bg-video {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;      /* заполняет экран без искажений, лишнее обрезается */
-    z-index: 0;
-    pointer-events: none;
-    opacity: 0;             /* появляется плавно, когда видео реально запустилось */
-    transition: opacity 900ms ease;
+    position: fixed; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; z-index: 0; pointer-events: none;
+    opacity: 0; transition: opacity 900ms ease;
   }
   .bg-video.is-playing { opacity: 1; }
 
-  /* затемнение поверх видео + тёплое «зарево» снизу; яркость меняется в --shade */
   .bg-shade {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
     background:
       radial-gradient(110% 60% at 50% 115%, rgba(var(--neon-rgb), 0.32), rgba(var(--neon-rgb), 0) 65%),
       rgba(0, 0, 0, var(--shade));
-    opacity: 0;
-    transition: opacity 900ms ease;
+    opacity: 0; transition: opacity 900ms ease;
   }
   .bg-video.is-playing + .bg-shade { opacity: 1; }
 
-  /* искры, летящие вверх */
-  #embers {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    pointer-events: none;
-  }
+  #embers { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
 
-  /* --- общая шапка --- */
+  /* --- шапка --- */
   .site-header {
-    position: sticky;
-    top: 0;
-    z-index: 20;
+    position: sticky; top: 0; z-index: 20;
     padding: calc(14px + env(safe-area-inset-top, 0px)) 20px 14px;
     background: rgba(8, 3, 2, 0.7);
-    -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(var(--neon-rgb), 0.3);
     box-shadow: 0 8px 32px rgba(var(--neon-rgb), 0.08);
   }
   .site-header__inner {
-    max-width: 1000px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
+    max-width: 1000px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
   }
   .brand { display: block; line-height: 0; }
-  .brand img {
-    display: block;
-    height: 24px;
-    width: auto;
-    filter: drop-shadow(0 0 8px rgba(var(--neon-rgb), 0.7));
-  }
-  .site-header__city {
-    color: var(--ink-dim);
-    font-size: 0.95rem;
-  }
+  .brand img { display: block; height: 24px; width: auto; filter: drop-shadow(0 0 8px rgba(var(--neon-rgb), 0.7)); }
+  .site-header__city { color: var(--ink-dim); font-size: 0.95rem; }
 
   /* --- основная область --- */
   main {
-    position: relative;
-    z-index: 1;
-    max-width: 1000px;
-    margin: 0 auto;
+    position: relative; z-index: 1;
+    max-width: 1000px; margin: 0 auto;
     padding: 0 20px calc(120px + env(safe-area-inset-bottom, 0px));
   }
 
-  .panel p, .panel h3 {
-    text-shadow: 0 1px 14px rgba(0, 0, 0, 0.6);
-  }
+  .panel p, .panel h3 { text-shadow: 0 1px 14px rgba(0, 0, 0, 0.6); }
 
   .panel {
-    opacity: 0;
-    filter: blur(14px);
-    transform: scale(0.985);
+    opacity: 0; filter: blur(14px); transform: scale(0.985);
     transition: opacity var(--fade) ease, filter var(--fade) ease, transform var(--fade) ease;
   }
   .panel[hidden] { display: none; }
-  .panel.is-visible {
-    opacity: 1;
-    filter: blur(0);
-    transform: none;
-  }
+  .panel.is-visible { opacity: 1; filter: blur(0); transform: none; }
 
-  /* --- неоновый текст: раскалённая белая сердцевина и оранжевое свечение --- */
+  /* --- неоновый текст --- */
   .hero__title,
   .join h2 {
     --halo: var(--neon-rgb);
@@ -197,34 +140,20 @@
   }
   .join h2 { --halo: var(--neon-2-rgb); }
 
-  /* --- О нас: hero --- */
-  .hero {
-    padding: 64px 0 44px;
-    min-height: 380px;
-  }
+  /* --- hero --- */
+  .hero { padding: 64px 0 44px; min-height: 380px; }
   .hero__title {
-    margin: 0 0 30px;
-    max-width: 15ch;
-    font-family: var(--display);
-    font-weight: 700;
+    margin: 0 0 30px; max-width: 15ch;
+    font-family: var(--display); font-weight: 700;
     font-size: clamp(1.9rem, 6.2vw, 3.6rem);
-    line-height: 1.14;
-    letter-spacing: -0.01em;
-    text-wrap: balance;
+    line-height: 1.14; letter-spacing: -0.01em; text-wrap: balance;
     animation: neon-on 1.5s ease-out both;
   }
-  /* неоновая трубка под заголовком */
   .hero__title::after {
-    content: "";
-    display: block;
-    width: 120px;
-    height: 5px;
-    margin-top: 26px;
-    border-radius: 5px;
-    background: var(--fire);
+    content: ""; display: block; width: 120px; height: 5px; margin-top: 26px;
+    border-radius: 5px; background: var(--fire);
     box-shadow: 0 0 10px rgba(var(--neon-rgb), 0.95), 0 0 28px rgba(var(--neon-rgb), 0.65);
   }
-  /* вывеска включается с миганием — единственный «выход» на странице */
   @keyframes neon-on {
     0%, 7%   { opacity: 0.12; }
     9%       { opacity: 1; }
@@ -233,202 +162,163 @@
     22%      { opacity: 0.45; }
     28%, 100%{ opacity: 1; }
   }
-  .hero__lead {
-    margin: 0;
-    max-width: 44ch;
-    color: #eadfd4;
-    font-size: 1.15rem;
-  }
+  .hero__lead { margin: 0; max-width: 44ch; color: #eadfd4; font-size: 1.15rem; }
 
-  /* --- видеоафиша --- */
-  .afisha { padding: 8px 0 32px; }
-  .afisha h2 {
+  /* --- заголовки секций --- */
+  .afisha h2, .story h2, .tickets h2, .partners h2, .gallery h2 {
     margin: 0 0 20px;
-    font-family: var(--display);
-    font-weight: 500;
-    font-size: clamp(1.25rem, 3.4vw, 1.7rem);
-    line-height: 1.25;
+    font-family: var(--display); font-weight: 500;
+    font-size: clamp(1.25rem, 3.4vw, 1.7rem); line-height: 1.25;
     text-shadow: 0 0 22px rgba(var(--neon-rgb), 0.5);
   }
-  .afisha__frame {
-    width: min(100%, 420px);
+
+  /* --- афиши (главная и выбор билетов) --- */
+  .afisha { padding: 8px 0 32px; }
+  .afisha__grid, .events {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .event {
+    display: flex; flex-direction: column;
     border: 1.5px solid rgba(var(--neon-rgb), 0.6);
-    border-radius: 24px;
-    overflow: hidden;
-    background: #0d0705;
-    box-shadow: 0 0 26px rgba(var(--neon-rgb), 0.35), inset 0 0 26px rgba(var(--neon-rgb), 0.08);
+    border-radius: 24px; overflow: hidden;
+    background: rgba(13, 7, 5, 0.85);
+    box-shadow: 0 0 26px rgba(var(--neon-rgb), 0.3), inset 0 0 26px rgba(var(--neon-rgb), 0.08);
   }
-  .afisha video { display: block; width: 100%; height: auto; }
-  .afisha .btn { margin-top: 24px; }
+  .event img, .event video {
+    display: block; width: 100%; aspect-ratio: 4 / 5;
+    object-fit: cover; background: #0d0705;
+  }
+  .event__body { padding: 18px 20px 22px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .event__title { margin: 0; font-family: var(--display); font-weight: 500; font-size: 1.1rem; }
+  .event__meta { margin: 0; color: var(--ink-dim); font-size: 0.95rem; }
+  .event__body .btn { margin-top: auto; align-self: flex-start; }
+  .event__title + .event__meta + .btn,
+  .event__meta + .btn { margin-top: 14px; }
+  .event--poster { cursor: pointer; transition: transform 200ms ease, box-shadow 220ms ease; }
+  .event--poster:hover { transform: translateY(-3px); box-shadow: 0 0 34px rgba(var(--neon-rgb), 0.6); }
 
-  /* --- О нас: хроника вечера --- */
+  .back {
+    appearance: none;
+    border: 1.5px solid rgba(var(--neon-rgb), 0.5);
+    background: rgba(24, 8, 2, 0.5); color: var(--ink);
+    padding: 10px 20px; border-radius: 999px; cursor: pointer;
+    font-family: var(--body); font-weight: 600; font-size: 0.95rem;
+    margin-bottom: 24px;
+    transition: border-color 200ms ease, box-shadow 200ms ease;
+  }
+  .back:hover { border-color: rgb(var(--neon-rgb)); box-shadow: 0 0 18px rgba(var(--neon-rgb), 0.5); }
+
+  /* --- хроника --- */
   .story { padding: 24px 0 8px; }
-  .story h2,
-  .tickets h2 {
-    margin: 0 0 28px;
-    font-family: var(--display);
-    font-weight: 500;
-    font-size: clamp(1.25rem, 3.4vw, 1.7rem);
-    line-height: 1.25;
-    text-shadow: 0 0 22px rgba(var(--neon-rgb), 0.5);
-  }
+  .story h2 { margin-bottom: 28px; }
 
-  .timeline {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    max-width: 640px;
-  }
-  .timeline li {
-    position: relative;
-    padding: 0 0 36px 44px;
-  }
+  .timeline { list-style: none; margin: 0; padding: 0; max-width: 640px; }
+  .timeline li { position: relative; padding: 0 0 36px 44px; }
   .timeline li:last-child { padding-bottom: 0; }
-
-  .timeline li::before {           /* светящаяся лампочка гирлянды */
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0.42rem;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
+  .timeline li::before {
+    content: ""; position: absolute; left: 0; top: 0.42rem;
+    width: 12px; height: 12px; border-radius: 50%;
     background: rgb(var(--neon-rgb));
     box-shadow: 0 0 0 4px rgba(var(--neon-rgb), 0.16), 0 0 16px rgba(var(--neon-rgb), 0.95), 0 0 34px rgba(var(--neon-rgb), 0.6);
   }
-  .timeline li:last-child::before {   /* финал истории — самая яркая лампочка */
+  .timeline li:last-child::before {
     background: #fff;
     box-shadow: 0 0 0 4px rgba(var(--neon-4-rgb), 0.25), 0 0 18px rgba(var(--neon-4-rgb), 1), 0 0 44px rgba(var(--neon-2-rgb), 0.8);
   }
-  .timeline li:not(:last-child)::after {   /* неоновая трубка к следующей лампочке */
-    content: "";
-    position: absolute;
-    left: 5px;
-    top: 1.6rem;
-    bottom: -0.3rem;
-    width: 2px;
-    border-radius: 2px;
+  .timeline li:not(:last-child)::after {
+    content: ""; position: absolute; left: 5px; top: 1.6rem; bottom: -0.3rem;
+    width: 2px; border-radius: 2px;
     background: linear-gradient(to bottom, rgba(var(--neon-rgb), 0.95), rgba(var(--neon-2-rgb), 0.35));
     box-shadow: 0 0 8px rgba(var(--neon-rgb), 0.55);
   }
-  .timeline h3 {
-    margin: 0 0 6px;
-    font-family: var(--display);
-    font-weight: 500;
-    font-size: 1.05rem;
-    line-height: 1.35;
-  }
-  .timeline p {
-    margin: 0;
-    max-width: 52ch;
-    color: #cdbfb3;
-  }
+  .timeline h3 { margin: 0 0 6px; font-family: var(--display); font-weight: 500; font-size: 1.05rem; line-height: 1.35; }
+  .timeline p { margin: 0; max-width: 52ch; color: #cdbfb3; }
   .timeline p a {
-    color: var(--ink);
-    text-decoration: underline;
-    text-decoration-color: rgba(var(--neon-2-rgb), 0.7);
-    text-underline-offset: 3px;
+    color: var(--ink); text-decoration: underline;
+    text-decoration-color: rgba(var(--neon-2-rgb), 0.7); text-underline-offset: 3px;
     transition: color 200ms ease, text-decoration-color 200ms ease;
   }
   .timeline p a:hover { color: rgb(var(--neon-4-rgb)); text-decoration-color: rgb(var(--neon-4-rgb)); }
 
+  /* --- слайдер «Как это было» --- */
+  .gallery { padding: 64px 0 8px; }
+  .slider { position: relative; }
+  .slider__track {
+    display: flex; gap: 14px; overflow-x: auto;
+    scroll-snap-type: x mandatory; scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .slider__track::-webkit-scrollbar { display: none; }
+  .slider__track img {
+    flex: none; height: 340px; width: auto; max-width: 85vw;
+    border-radius: 18px; scroll-snap-align: center; object-fit: cover;
+    border: 1.5px solid rgba(var(--neon-rgb), 0.4);
+    background: #0d0705;
+  }
+  .slider__btn {
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
+    width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
+    border: 1.5px solid rgba(var(--neon-rgb), 0.7);
+    background: rgba(16, 6, 2, 0.8); color: var(--ink); font-size: 1.2rem;
+    transition: box-shadow 200ms ease;
+  }
+  .slider__btn:hover { box-shadow: 0 0 18px rgba(var(--neon-rgb), 0.6); }
+  .slider__btn--prev { left: 8px; }
+  .slider__btn--next { right: 8px; }
+
   /* --- партнёры --- */
   .partners { padding: 64px 0 8px; }
-  .partners h2 {
-    margin: 0 0 12px;
-    font-family: var(--display);
-    font-weight: 500;
-    font-size: clamp(1.25rem, 3.4vw, 1.7rem);
-    line-height: 1.25;
-    text-shadow: 0 0 22px rgba(var(--neon-rgb), 0.5);
-  }
+  .partners h2 { margin-bottom: 12px; }
   .partners__lead { margin: 0 0 28px; max-width: 48ch; color: #cdbfb3; }
   .partners__list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 16px;
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px;
   }
   .partner {
-    display: grid;
-    place-items: center;
-    min-height: 96px;
-    padding: 16px 20px;
-    border: 1.5px solid rgba(var(--neon-rgb), 0.35);
-    border-radius: 20px;
+    display: grid; place-items: center; min-height: 96px; padding: 16px 20px;
+    border: 1.5px solid rgba(var(--neon-rgb), 0.35); border-radius: 20px;
     background: rgba(24, 8, 2, 0.5);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    color: var(--ink);
-    font-family: var(--display);
-    font-weight: 500;
-    font-size: 0.85rem;
-    line-height: 1.3;
-    text-align: center;
-    text-decoration: none;
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    color: var(--ink); font-family: var(--display); font-weight: 500;
+    font-size: 0.85rem; line-height: 1.3; text-align: center; text-decoration: none;
     transition: transform 200ms ease, border-color 220ms ease, box-shadow 220ms ease, color 220ms ease;
   }
   .partner img {
-    display: block;
-    max-width: 100%;
-    max-height: 48px;
-    object-fit: contain;
-    filter: brightness(0) invert(1);
-    opacity: 0.8;
+    display: block; max-width: 100%; max-height: 48px; object-fit: contain;
+    filter: brightness(0) invert(1); opacity: 0.8;
     transition: opacity 220ms ease, filter 220ms ease;
   }
   .partner--brand { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
   .partner__mark { width: 44px; height: 44px; filter: drop-shadow(0 0 8px rgba(var(--neon-rgb), 0.8)); }
   .partner__name { letter-spacing: 0.04em; text-transform: uppercase; }
   a.partner:hover {
-    transform: translateY(-2px);
-    border-color: rgb(var(--neon-rgb));
+    transform: translateY(-2px); border-color: rgb(var(--neon-rgb));
     box-shadow: 0 0 24px rgba(var(--neon-rgb), 0.55), inset 0 0 18px rgba(var(--neon-rgb), 0.18);
   }
   a.partner:hover img { filter: none; opacity: 1; }
   .partners__cta { margin: 24px 0 0; color: #cdbfb3; }
   .partners__cta a {
-    color: var(--ink);
-    text-decoration: underline;
-    text-decoration-color: rgba(var(--neon-2-rgb), 0.7);
-    text-underline-offset: 3px;
+    color: var(--ink); text-decoration: underline;
+    text-decoration-color: rgba(var(--neon-2-rgb), 0.7); text-underline-offset: 3px;
   }
 
-  /* --- О нас: подписка на соцсети --- */
+  /* --- подписка на соцсети --- */
   .join { padding: 64px 0 8px; }
   .join h2 {
-    margin: 0 0 22px;
-    font-family: var(--display);
-    font-weight: 700;
-    font-size: clamp(1.6rem, 5vw, 2.6rem);
-    line-height: 1.15;
-    letter-spacing: -0.01em;
-    text-wrap: balance;
+    margin: 0 0 22px; font-family: var(--display); font-weight: 700;
+    font-size: clamp(1.6rem, 5vw, 2.6rem); line-height: 1.15;
+    letter-spacing: -0.01em; text-wrap: balance;
   }
-  .join p {
-    margin: 0 0 14px;
-    max-width: 52ch;
-    color: #cdbfb3;
-  }
+  .join p { margin: 0 0 14px; max-width: 52ch; color: #cdbfb3; }
   .join p:first-of-type { color: #eadfd4; font-size: 1.1rem; }
-  .join p.join__call {
-    margin-top: 22px;
-    color: var(--ink);
-    font-weight: 500;
-  }
+  .join p.join__call { margin-top: 22px; color: var(--ink); font-weight: 500; }
 
   .socials {
-    list-style: none;
-    margin: 26px 0 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-    max-width: 640px;
+    list-style: none; margin: 26px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; max-width: 640px;
   }
-  /* каждая кнопка — свой оттенок огня: от красного до золотого */
   .socials li:nth-child(1) .social { --c: var(--neon-3-rgb); }
   .socials li:nth-child(2) .social { --c: var(--neon-rgb); }
   .socials li:nth-child(3) .social { --c: var(--neon-2-rgb); }
@@ -436,189 +326,97 @@
 
   .social {
     --c: var(--neon-rgb);
-    display: flex;
-    align-items: center;
-    gap: 14px;
+    display: flex; align-items: center; gap: 14px;
     padding: 10px 24px 10px 10px;
-    border: 1.5px solid rgba(var(--c), 0.85);
-    border-radius: 999px;
+    border: 1.5px solid rgba(var(--c), 0.85); border-radius: 999px;
     background: rgba(24, 8, 2, 0.5);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
     box-shadow: 0 0 14px rgba(var(--c), 0.35), inset 0 0 16px rgba(var(--c), 0.14);
-    color: var(--ink);
-    text-decoration: none;
+    color: var(--ink); text-decoration: none;
     transition: transform 200ms ease, box-shadow 220ms ease, border-color 220ms ease, background 220ms ease;
   }
   .social__icon {
-    flex: none;
-    display: grid;
-    place-items: center;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: rgba(var(--c), 0.16);
-    box-shadow: inset 0 0 10px rgba(var(--c), 0.3);
+    flex: none; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%;
+    background: rgba(var(--c), 0.16); box-shadow: inset 0 0 10px rgba(var(--c), 0.3);
     color: rgb(var(--c));
     transition: background 220ms ease, color 220ms ease, box-shadow 220ms ease;
   }
-  .social__icon svg {
-    width: 22px;
-    height: 22px;
-    filter: drop-shadow(0 0 5px rgba(var(--c), 0.9));
-    transition: filter 220ms ease;
-  }
-  .social__name {
-    display: block;
-    font-family: var(--display);
-    font-weight: 500;
-    font-size: 0.92rem;
-    line-height: 1.25;
-  }
-  .social__cta {
-    display: block;
-    color: var(--ink-dim);
-    font-size: 0.9rem;
-    line-height: 1.35;
-  }
+  .social__icon svg { width: 22px; height: 22px; filter: drop-shadow(0 0 5px rgba(var(--c), 0.9)); transition: filter 220ms ease; }
+  .social__name { display: block; font-family: var(--display); font-weight: 500; font-size: 0.92rem; line-height: 1.25; }
+  .social__cta { display: block; color: var(--ink-dim); font-size: 0.9rem; line-height: 1.35; }
   .social:hover {
-    transform: translateY(-2px);
-    border-color: rgb(var(--c));
-    background: rgba(var(--c), 0.1);
+    transform: translateY(-2px); border-color: rgb(var(--c)); background: rgba(var(--c), 0.1);
     box-shadow: 0 0 24px rgba(var(--c), 0.65), 0 0 56px rgba(var(--c), 0.3), inset 0 0 22px rgba(var(--c), 0.28);
   }
-  .social:hover .social__icon {
-    background: rgb(var(--c));
-    color: var(--on-fire);
-    box-shadow: 0 0 18px rgba(var(--c), 0.85);
-  }
+  .social:hover .social__icon { background: rgb(var(--c)); color: var(--on-fire); box-shadow: 0 0 18px rgba(var(--c), 0.85); }
   .social:hover .social__icon svg { filter: none; }
   .social:active { transform: scale(0.98); }
 
-  /* --- О нас: финальный призыв --- */
+  /* --- финальный призыв --- */
   .closing {
-    margin-top: 64px;
-    padding-top: 32px;
-    border-top: 1px solid var(--line);
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
+    margin-top: 64px; padding-top: 32px; border-top: 1px solid var(--line);
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px;
   }
-  .closing p {
-    margin: 0;
-    max-width: 34ch;
-    font-family: var(--display);
-    font-weight: 500;
-    font-size: 1.1rem;
-    line-height: 1.4;
-  }
+  .closing p { margin: 0; max-width: 34ch; font-family: var(--display); font-weight: 500; font-size: 1.1rem; line-height: 1.4; }
 
   .btn {
-    appearance: none;
-    border: 0;
-    cursor: pointer;
-    padding: 17px 36px;
-    border-radius: 999px;
-    background: var(--fire);
-    color: var(--on-fire);
-    font-family: var(--display);
-    font-weight: 700;
-    font-size: 0.92rem;
+    appearance: none; border: 0; cursor: pointer;
+    padding: 17px 36px; border-radius: 999px;
+    background: var(--fire); color: var(--on-fire);
+    font-family: var(--display); font-weight: 700; font-size: 0.92rem;
     box-shadow: 0 0 20px rgba(var(--neon-rgb), 0.6), 0 0 56px rgba(var(--neon-rgb), 0.28);
     transition: transform 200ms ease, box-shadow 220ms ease, filter 220ms ease;
   }
-  .btn:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.08);
-    box-shadow: 0 0 28px rgba(var(--neon-rgb), 0.85), 0 0 80px rgba(var(--neon-rgb), 0.45);
-  }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.08); box-shadow: 0 0 28px rgba(var(--neon-rgb), 0.85), 0 0 80px rgba(var(--neon-rgb), 0.45); }
   .btn:active { transform: scale(0.97); }
 
-  /* --- Купить билет: виджет --- */
+  /* --- вкладка «Купить билет» --- */
   .tickets { padding: 48px 0 0; }
-  .tickets__lead {
-    margin: -12px 0 28px;
-    color: #cdbfb3;
-    max-width: 48ch;
-  }
+  .tickets__lead { margin: -8px 0 28px; color: #cdbfb3; max-width: 48ch; }
   .widget {
     position: relative;
-    border: 1.5px solid rgba(var(--neon-rgb), 0.6);
-    border-radius: 24px;
-    overflow: hidden;
+    border: 1.5px solid rgba(var(--neon-rgb), 0.6); border-radius: 24px; overflow: hidden;
     background: #0d0705;
     box-shadow: 0 0 26px rgba(var(--neon-rgb), 0.28), inset 0 0 26px rgba(var(--neon-rgb), 0.08);
   }
-  .widget__loading {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    color: var(--ink-dim);
-    font-size: 0.95rem;
-  }
-  .widget iframe {
-    position: relative;
-    display: block;
-    width: 100%;
-    height: 760px;
-    border: 0;
-    background: transparent;
-  }
+  .widget__loading { position: absolute; inset: 0; display: grid; place-items: center; color: var(--ink-dim); font-size: 0.95rem; }
+  .widget iframe { position: relative; display: block; width: 100%; height: 760px; border: 0; background: transparent; }
 
   /* --- нижние вкладки --- */
   .tabs {
-    position: fixed;
-    z-index: 30;
-    left: 50%;
+    position: fixed; z-index: 30; left: 50%;
     bottom: calc(16px + env(safe-area-inset-bottom, 0px));
     transform: translateX(-50%);
     width: min(92vw, 420px);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 4px;
-    border: 1.5px solid rgba(var(--neon-rgb), 0.45);
-    border-radius: 999px;
+    display: grid; grid-template-columns: 1fr 1fr; padding: 4px;
+    border: 1.5px solid rgba(var(--neon-rgb), 0.45); border-radius: 999px;
     background: rgba(16, 6, 2, 0.8);
-    -webkit-backdrop-filter: blur(14px);
-    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
     box-shadow: 0 0 26px rgba(var(--neon-rgb), 0.25), inset 0 0 18px rgba(var(--neon-rgb), 0.1);
   }
   .tabs__thumb {
-    position: absolute;
-    top: 4px;
-    bottom: 4px;
-    left: 4px;
-    width: calc(50% - 4px);
-    border-radius: 999px;
-    background: var(--fire);
+    position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px);
+    border-radius: 999px; background: var(--fire);
     box-shadow: 0 0 18px rgba(var(--neon-rgb), 0.75), 0 0 36px rgba(var(--neon-rgb), 0.35);
     transition: transform 380ms cubic-bezier(.6, 0, .2, 1);
   }
   .tabs[data-active="tickets"] .tabs__thumb { transform: translateX(100%); }
 
   .tab {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 13px 10px;
-    border: 0;
-    border-radius: 999px;
-    background: none;
-    color: var(--ink-dim);
-    font-family: var(--body);
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: color 250ms ease;
+    position: relative; z-index: 1;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 13px 10px; border: 0; border-radius: 999px; background: none;
+    color: var(--ink-dim); font-family: var(--body); font-weight: 600; font-size: 1rem;
+    cursor: pointer; transition: color 250ms ease;
   }
   .tab svg { width: 18px; height: 18px; flex: none; }
   .tab[aria-selected="true"] { color: var(--on-fire); }
+
+  /* ссылки, оформленные как кнопки */
+  a.btn, a.back, a.tab { text-decoration: none; }
+  a.btn { display: inline-block; text-align: center; }
+  a.back { display: inline-block; }
+  .tab.is-current { color: var(--on-fire); }
 
   :focus-visible { outline: 2px solid rgb(var(--neon-4-rgb)); outline-offset: 3px; }
 
@@ -627,10 +425,13 @@
     .widget iframe { height: 700px; }
     .join { padding-top: 48px; }
     .socials { grid-template-columns: 1fr; }
+    .afisha__grid, .events { grid-template-columns: 1fr; }
+    .slider__track img { height: 260px; }
+    .slider__btn { display: none; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .panel, .tabs__thumb, .btn, .social, .social__icon, .timeline p a, .partner { transition: none; }
+    .panel, .tabs__thumb, .btn, .social, .social__icon, .timeline p a, .partner, .event--poster { transition: none; }
     .hero__title { animation: none; }
     .bg-lights::before, .bg-lights::after { animation: none; }
   }
@@ -638,14 +439,13 @@
 </head>
 <body>
 
-<!-- ФОН: тёплый свет (запасной) -> видео -> затемнение с заревом -> искры.
-     Видео выбирается скриптом: вертикальный экран — mobile.mp4, иначе desktop.mp4. -->
+<!-- ФОН: свет -> видео -> затемнение -> искры -->
 <div class="bg-lights" aria-hidden="true"></div>
 <video class="bg-video" id="bg-video" muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1"></video>
 <div class="bg-shade" aria-hidden="true"></div>
 <canvas id="embers" aria-hidden="true"></canvas>
 
-<!-- ОБЩАЯ ШАПКА -->
+<!-- ШАПКА -->
 <header class="site-header">
   <div class="site-header__inner">
     <a class="brand" href="#about" aria-label="ОРИОН — на главную">
@@ -667,15 +467,13 @@
       </p>
     </div>
 
+    <!-- Афиши рисуются скриптом из списка EVENTS (внизу страницы) -->
     <section class="afisha" aria-labelledby="afisha-title">
-      <h2 id="afisha-title">Ближайшая тусовка</h2>
-      <div class="afisha__frame">
-        <video id="afisha-video" src="framevampire.mp4" autoplay muted loop playsinline controls preload="metadata"></video>
-      </div>
-      <button class="btn" type="button" data-go="tickets">Купить билет</button>
+      <h2 id="afisha-title">Ближайшие тусовки</h2>
+      <div class="afisha__grid" id="afisha-grid"></div>
     </section>
 
-    <div class="story">
+  <div class="story">
       <h2>Что мы уже сделали</h2>
       <ol class="timeline">
         <li>
@@ -693,11 +491,27 @@
 Выход на новый уровень масштаба.</p>
         </li>
         <li>
-          <h3>Следующий этап — клуб «Феррум»</h3>
-          <p>Клуб «Феррум» в Волгограде — следующая площадка «Ориона». Мощный звук, свет и вайб, который накроет как лавина. Дата и детали — в афише выше. <a href="https://vk.ru/martyroy" target="_blank" rel="noopener noreferrer">Marty Roy</a></p>
+          <h3>Следующий этап — клуб «Roof Bar»</h3>
+          <p>Клуб «Roof Bar» в Волгограде — следующая площадка «Ориона». Мощный звук, свет и вайб, который накроет как лавина. Дата и детали — в афише выше. <a href="https://vk.ru/martyroy" target="_blank" rel="noopener noreferrer">Marty Roy</a></p>
+        </li>
+        <li>
+          <h3>Затем — клуб «Ferrum»</h3>
+          <p>После «Roof Bar» «Орион» приходит в клуб «Ferrum».
+
+Плотный звук, свет и танцпол без пауз.</p>
         </li>
       </ol>
     </div>
+
+    <!-- СЛАЙДЕР: фото из папки slider/ подставляются скриптом -->
+    <section class="gallery" aria-labelledby="gallery-title">
+      <h2 id="gallery-title">Как это было</h2>
+      <div class="slider">
+        <button class="slider__btn slider__btn--prev" type="button" aria-label="Назад">←</button>
+        <div class="slider__track" id="slider-track"></div>
+        <button class="slider__btn slider__btn--next" type="button" aria-label="Вперёд">→</button>
+      </div>
+    </section>
 
     <section class="partners" aria-labelledby="partners-title">
       <h2 id="partners-title">Партнёры</h2>
@@ -722,7 +536,7 @@
             <span class="partner__name">Bazooka Records</span>
           </span>
         </li>
-        <!-- Добавить партнёра: скопируйте один из вариантов ниже и вставьте сюда.
+        <!-- Добавить партнёра: скопируйте один из вариантов и вставьте сюда.
         С логотипом и ссылкой (файл положите в папку partners/):
         <li>
           <a class="partner" href="https://ССЫЛКА" target="_blank" rel="noopener noreferrer">
@@ -815,21 +629,16 @@
     </div>
   </section>
 
-  <!-- ВКЛАДКА 2: КУПИТЬ БИЛЕТ -->
+  <!-- ВКЛАДКА 2: КУПИТЬ БИЛЕТ — виджет со всеми мероприятиями кабинета -->
   <section class="panel tickets" id="panel-tickets" role="tabpanel" aria-labelledby="tab-tickets" hidden>
     <h2>Билеты</h2>
-    <p class="tickets__lead">Выберите мероприятие, количество билетов и оплатите прямо на этой странице.</p>
+    <p class="tickets__lead">Все мероприятия ОРИОН в одном списке. Выберите нужное и оплатите прямо на этой странице.</p>
 
     <div class="widget">
       <div class="widget__loading">Загружаем виджет продажи билетов…</div>
-
-      <!--
-        ВСТАВЬТЕ СЮДА ВАШ ВИДЖЕТ QTICKETS:
-        замените значение src на ссылку из кабинета qtickets
-        (Виджеты → Встроить на сайт). Высоту можно менять в CSS: .widget iframe { height: ... }
-      -->
+      <!-- ВСТАВЬТЕ СЮДА ССЫЛКУ НА ВИДЖЕТ СО ВСЕМИ МЕРОПРИЯТИЯМИ из кабинета Qtickets (Виджеты → Встроить на сайт) -->
       <iframe
-        src="https://qtickets.ru/event/260260?base_color=851930"
+        src="https://qqqj5r.qtickets.ru/"
         title="Покупка билетов ОРИОН"
         loading="lazy"
         allow="payment"
@@ -866,8 +675,26 @@
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var FADE = reduce ? 0 : 520;
 
-  var afisha = document.getElementById('afisha-video');
-  if (afisha && reduce) { afisha.removeAttribute('autoplay'); afisha.pause(); }
+  /* ================= МЕРОПРИЯТИЯ: правьте только здесь =================
+     page — папка со страницей мероприятия (в ней свой index.html и свой виджет). */
+  var EVENTS = [
+    {
+      title: 'Rancho ORION party 18+',
+      meta: 'Дата: 23 октября 2026 · Место: Roof Bar ул. Стадионная 39',                  // ← впишите дату и площадку
+      poster: 'afisha/Rancho.jpg',
+      video: 'videoafisha/framerancho.mp4',
+      page: 'rancho/'
+    },
+    {
+      title: 'ORION Сумерки (closed party) 18+',
+      meta: 'Дата 20 ноября 2026· Место: клуб Ferrum, Рабоче-Крестьянская улица, 2/1',                  // ← впишите дату и площадку
+      poster: 'afisha/vampire.jpg',
+      video: 'videoafisha/framevampire.mp4',
+      page: 'vampire/'
+    }
+  ];
+  var SLIDER_COUNT = 35;   // фото в папке slider/: _ (1).jpg … _ (35).jpg
+  /* ===================================================================== */
 
   var nav = document.querySelector('.tabs');
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
@@ -878,6 +705,35 @@
   var current = 'about';
   var token = 0;
 
+  /* --- афиши на главной: карточка с видео, кнопка ведёт на страницу мероприятия --- */
+  var afishaGrid = document.getElementById('afisha-grid');
+  EVENTS.forEach(function (ev) {
+    afishaGrid.insertAdjacentHTML('beforeend',
+      '<article class="event">' +
+        '<video src="' + encodeURI(ev.video) + '" poster="' + encodeURI(ev.poster) + '" controls muted loop playsinline preload="none"></video>' +
+        '<div class="event__body"><h3 class="event__title">' + ev.title + '</h3>' +
+        '<p class="event__meta">' + ev.meta + '</p>' +
+        '<a class="btn" href="' + ev.page + '">Купить билет</a></div>' +
+      '</article>');
+  });
+
+  /* --- слайдер --- */
+  var track = document.getElementById('slider-track');
+  for (var n = 1; n <= SLIDER_COUNT; n++) {
+    var im = document.createElement('img');
+    im.src = 'slider/' + encodeURI('_ (' + n + ').jpg');
+    im.alt = 'Фото с прошлых тусовок';
+    im.loading = 'lazy';
+    track.appendChild(im);
+  }
+  document.querySelector('.slider__btn--prev').addEventListener('click', function () {
+    track.scrollBy({ left: -track.clientWidth * 0.8, behavior: reduce ? 'auto' : 'smooth' });
+  });
+  document.querySelector('.slider__btn--next').addEventListener('click', function () {
+    track.scrollBy({ left: track.clientWidth * 0.8, behavior: reduce ? 'auto' : 'smooth' });
+  });
+
+  /* --- вкладки «О нас» / «Купить билет» --- */
   function setTabs(name) {
     nav.setAttribute('data-active', name);
     tabs.forEach(function (t) {
@@ -896,7 +752,6 @@
     setTabs(name);
     if (focusTab) document.getElementById('tab-' + name).focus();
 
-    // 1) старый контент растворяется
     from.classList.remove('is-visible');
 
     setTimeout(function () {
@@ -904,8 +759,7 @@
       from.hidden = true;
       to.hidden = false;
       window.scrollTo(0, 0);
-      void to.offsetWidth; // перезапуск transition
-      // 2) на его месте проявляется новый
+      void to.offsetWidth;
       to.classList.add('is-visible');
     }, FADE);
 
@@ -926,14 +780,13 @@
     b.addEventListener('click', function () { show(b.dataset.go); });
   });
 
-  // клик по логотипу возвращает на «О нас»
   document.querySelector('.brand').addEventListener('click', function (e) {
     e.preventDefault();
     show('about');
     window.scrollTo(0, 0);
   });
 
-  // открыть сразу вкладку с билетами по ссылке вида сайт/#tickets
+  // ссылка вида сайт/#tickets сразу открывает «Купить билет»
   if (location.hash === '#tickets') {
     panels.about.classList.remove('is-visible');
     panels.about.hidden = true;
@@ -948,7 +801,6 @@
   var portrait = window.matchMedia('(max-aspect-ratio: 1/1)');
   var saveData = navigator.connection && navigator.connection.saveData;
 
-  // при включённом «уменьшении движения» или экономии трафика видео не грузим — остаётся тёплый свет
   if (video && !reduce && !saveData) {
     var currentFile = '';
 
@@ -970,11 +822,9 @@
     video.addEventListener('playing', function () { video.classList.add('is-playing'); });
     video.addEventListener('error', function () { video.classList.remove('is-playing'); });
 
-    // поворот телефона / изменение окна: подменяем видео на подходящее
     if (portrait.addEventListener) portrait.addEventListener('change', pickVideo);
     else portrait.addListener(pickVideo);
 
-    // iPhone в режиме экономии заряда блокирует автозапуск — пробуем ещё раз по первому касанию
     document.addEventListener('touchstart', function () {
       if (video.paused) tryPlay();
     }, { once: true, passive: true });
@@ -982,7 +832,7 @@
     pickVideo();
   }
 
-  /* --- искры: светящиеся огоньки медленно летят вверх (цвета берутся из палитры в CSS) --- */
+  /* --- искры --- */
   var canvas = document.getElementById('embers');
   if (canvas && !reduce) {
     var ctx = canvas.getContext('2d');
@@ -991,7 +841,6 @@
       return css.getPropertyValue(name).trim() || '255, 120, 30';
     });
 
-    // заранее рисуем по одному светящемуся «шарику» на каждый цвет
     var sprites = palette.map(function (c) {
       var s = document.createElement('canvas');
       s.width = s.height = 64;
@@ -1011,7 +860,7 @@
       p.x = Math.random() * W;
       p.y = initial ? Math.random() * H : H + 20;
       p.size = 7 + Math.random() * 17;
-      p.vy = 14 + Math.random() * 34;                 // скорость подъёма, px/сек
+      p.vy = 14 + Math.random() * 34;
       p.vx = (Math.random() - 0.5) * 10;
       p.sway = Math.random() * Math.PI * 2;
       p.swaySpeed = 0.5 + Math.random() * 1.1;
@@ -1027,13 +876,13 @@
       canvas.width = W * dpr;
       canvas.height = H * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      var n = Math.round(Math.min(90, (W * H) / 24000));
-      while (parts.length < n) parts.push(spawn({}, true));
-      parts.length = n;
+      var cnt = Math.round(Math.min(90, (W * H) / 24000));
+      while (parts.length < cnt) parts.push(spawn({}, true));
+      parts.length = cnt;
     };
 
     var last = performance.now();
-    var frame = function (now) {
+    var frameFn = function (now) {
       var dt = Math.min(0.05, (now - last) / 1000);
       last = now;
       ctx.clearRect(0, 0, W, H);
@@ -1044,11 +893,11 @@
         p.sway += p.swaySpeed * dt;
         p.x += (p.vx + Math.sin(p.sway) * 14) * dt;
         if (p.y < -30) { spawn(p, false); continue; }
-        var fade = Math.max(0, Math.min(1, p.y / (H * 0.45)));   // гаснут ближе к верху
+        var fade = Math.max(0, Math.min(1, p.y / (H * 0.45)));
         ctx.globalAlpha = p.alpha * fade * (0.75 + 0.25 * Math.sin(p.sway * 3));
         ctx.drawImage(p.sprite, p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
       }
-      requestAnimationFrame(frame);
+      requestAnimationFrame(frameFn);
     };
 
     resize();
@@ -1056,7 +905,7 @@
     window.addEventListener('resize', function () {
       if (window.innerWidth !== lastW) { lastW = window.innerWidth; resize(); }
     });
-    requestAnimationFrame(frame);
+    requestAnimationFrame(frameFn);
   }
 })();
 </script>
